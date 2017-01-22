@@ -1,0 +1,24 @@
+{
+  "name": "spiderhuajiaoanchor",
+  "version": "1.0.0",
+  "description": "spider huajiao anchor info",
+  "main": "huajiao.py",
+  "scripts": {
+    "test": "python huajiao.py"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NextZeus/spiderHuajiaoAnchor.git"
+  },
+  "keywords": [
+    "python",
+    "spider",
+    "huajiao"
+  ],
+  "author": "xiaodong.li",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NextZeus/spiderHuajiaoAnchor/issues"
+  },
+  "homepage": "https://github.com/NextZeus/spiderHuajiaoAnchor#readme"
+}
