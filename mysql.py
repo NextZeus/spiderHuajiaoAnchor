@@ -1,6 +1,5 @@
 import pymysql
-
-
+# 摘抄自 https://github.com/octans/PythonPractice
 def addslashes(s):
     try:
         d = {'"': '\\"', "'": "\\'", "\0": "\\\0", "\\": "\\\\"}
