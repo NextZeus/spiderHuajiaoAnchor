@@ -129,6 +129,7 @@ def get_mingxingricheng_data():
     data = list()
 
     year = datetime.datetime.now().year
+    print('花椒直播 明星行程')
 
     for child in video_list:
         if not isinstance(child, NavigableString):
@@ -154,7 +155,8 @@ def get_mingxingricheng_data():
             title = name_idvlms.b.get_text() + name_idvlms.a.get_text()
             xingcheng['title'] = title
             data.append(xingcheng)
-            print('xingcheng: ', xingcheng)
+            print('行程: ', xingcheng)
             return data
 
-get_mingxingricheng_data()
+# get_mingxingricheng_data()
+
