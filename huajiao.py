@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 from bs4 import NavigableString
 import requests
 import re
+import datetime
 
 def get_soup_by_url(url):
     html = requests.get(url)
@@ -22,7 +23,6 @@ def get_huajiao_video_categories():
             continue
         category = tag.get('href')[10:]
         categories[category] = des
-    print('categories: ', categories)
     return categories
 
 # 根据 分类id 和 页码 获取对应请求的url
@@ -49,34 +49,37 @@ def get_anchor_info_by_userid(userid):
     # userinfo div
     userInfo = soup.find('div', {'id': 'userInfo'})
 
-    username = userInfo.find('h3').get_text(strip=True)
-    person['username'] = username
-    # 头像
-    avatar = userInfo.find('img').get('src')
-    person['avatar'] = avatar
+    if userInfo is not None:
+        username = userInfo.find_all('h3')[0].get_text(strip=True)
+        person['username'] = username
+        # 头像
+        avatar = userInfo.find('img').get('src')
+        person['avatar'] = avatar
 
-    # 简介
-    about = userInfo.find('p', 'about')
-    person['about'] = about.get_text(strip=True)
+        # 简介
+        about = userInfo.find('p', 'about')
+        person['about'] = about.get_text(strip=True)
 
-    # 等级
-    level = userInfo.find('span', 'level')
-    person['level'] = level.get_text(strip=True)
+        # 等级
+        level = userInfo.find('span', 'level')
+        person['level'] = level.get_text(strip=True)
 
-    # other
-    clearfix = userInfo.find('ul', 'clearfix')
-    for child in clearfix.children:
-        if not isinstance(child, NavigableString):
-            p = child.find('p').get_text(strip=True)
-            h = child.find('h4').get_text(strip=True)
-            if h == '关注':
-                person['follow'] = p
-            elif h == '粉丝':
-                person['fans'] = p
-            elif h == '赞':
-                person['support'] = p
-            elif h == '经验值':
-                person['exp'] = p
+        # other
+        clearfix = userInfo.find('ul', 'clearfix')
+        for child in clearfix.children:
+            if not isinstance(child, NavigableString):
+                p = child.find('p').get_text(strip=True)
+                h = child.find('h4').get_text(strip=True)
+                if h == '关注':
+                    person['follow'] = p
+                elif h == '粉丝':
+                    person['fans'] = p
+                elif h == '赞':
+                    person['support'] = p
+                elif h == '经验值':
+                    person['exp'] = p
+    else:
+        print('userInfo has no find_all method userid:', userid, userInfo)
 
     print('person: ', person)
     return person
@@ -103,13 +106,53 @@ def get_category_list(catgory_id):
         for link in main_list:
             liveId = link.get('href')[3:]
             userid = get_anchorid_by_liveid(liveId)
-            person = get_anchor_info_by_userid(userid)
-            data.append(person)
+            if userid != 'uid':
+                person = get_anchor_info_by_userid(userid)
+                data.append(person)
 
     return data
 
-# categories = get_huajiao_video_categories()
-# print('花椒主播分类: ', categories)
-# for category in categories.keys():
-#     data = get_category_list(category)
-#     print('category ' + str(category)+' anchor-number: ', len(data))
+
+def get_all_anchor_data():
+    categories = get_huajiao_video_categories()
+    print('花椒主播分类: ', categories)
+    for category in categories.keys():
+        data = get_category_list(category)
+        print('category ' + str(category)+' anchor-number: ', len(data))
+
+
+def get_mingxingricheng_data():
+    url = "http://www.huajiao.com/recommend/mingxingricheng"
+    soup = get_soup_by_url(url)
+    video_list = soup.find('ul', 'videolist_lms')
+
+    data = list()
+
+    year = datetime.datetime.now().year
+
+    for child in video_list:
+        if not isinstance(child, NavigableString):
+            xingcheng = dict()
+
+            image = child.find('img').get('src')
+            xingcheng['image'] = image
+
+            date = str(year) + '-' + child.find('span', 'time_pdvims').get_text(" ", strip=True)
+            xingcheng['date'] = date
+
+            num_sidvlms = child.find('span', 'num_sidvlms').get_text(" ", strip=True)
+            xingcheng['watched'] = num_sidvlms
+
+            tit_idvlms = child.find('p', 'tit_idvlms').a
+            user_url = tit_idvlms.get('href')
+            user_name = tit_idvlms.get_text(strip=True)
+
+            xingcheng['url'] = user_url
+            xingcheng['user_name'] = user_name
+
+            name_idvlms = child.find('p', 'name_idvlms')
+            title = name_idvlms.b.get_text() + name_idvlms.a.get_text()
+            xingcheng['title'] = title
+            print('xingcheng: ', xingcheng)
+
+get_mingxingricheng_data()
