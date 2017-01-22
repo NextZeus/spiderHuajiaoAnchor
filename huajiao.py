@@ -153,6 +153,8 @@ def get_mingxingricheng_data():
             name_idvlms = child.find('p', 'name_idvlms')
             title = name_idvlms.b.get_text() + name_idvlms.a.get_text()
             xingcheng['title'] = title
+            data.append(xingcheng)
             print('xingcheng: ', xingcheng)
+            return data
 
 get_mingxingricheng_data()
