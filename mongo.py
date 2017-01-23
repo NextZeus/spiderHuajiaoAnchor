@@ -2,6 +2,7 @@ import pymongo
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 
+# 创建mongo client
 class Mongo():
     def __new__(cls, *args, **kwargs):
         client = MongoClient(str(*args))
@@ -10,6 +11,7 @@ class Mongo():
     def __del__(self):
         self.client.close()
 
+# 封装mongo api
 class Model():
     def __init__(self):
         self.collection = self.db[self.collection_name]
@@ -48,13 +50,15 @@ class Model():
         # If multiple documents match filter, a sort can be applied  sort=[('_id', pymongo.DESCENDING)]
         return self.collection.find_one_and_delete(filter, projection, sort)
 
+# 创建一个基类
 class BaseModel(Model):
     db = Mongo("mongodb://localhost:27017/")
-    print('db: ', db)
 
+# 用户类 继承基类
 class UserModel(BaseModel):
     collection_name = 'anchor'
 
+# 行程类 继承基类
 class Journey(BaseModel):
     collection_name = 'journey'
 
