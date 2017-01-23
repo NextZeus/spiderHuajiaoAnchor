@@ -5,6 +5,9 @@ import re
 import datetime
 from mongo import UserModel
 
+userModel = UserModel()
+
+
 def get_soup_by_url(url):
     html = requests.get(url)
     plain_text = html.text
@@ -109,6 +112,7 @@ def get_category_list(catgory_id):
             userid = get_anchorid_by_liveid(liveId)
             if userid != 'uid':
                 person = get_anchor_info_by_userid(userid)
+                userModel.update_one({'userid': userid}, person)
                 data.append(person)
 
     return data
@@ -120,8 +124,6 @@ def get_all_anchor_data():
     for category in categories.keys():
         data = get_category_list(category)
         print('category ' + str(category) + ' anchor-number: ', len(data))
-        if len(data) > 0:
-            UserModel().bulk_inserts(data)
 
     return
 

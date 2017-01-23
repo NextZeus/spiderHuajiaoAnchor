@@ -12,7 +12,6 @@ class Mongo():
 
 class Model():
     def __init__(self):
-        print('collection_name: ', self.collection_name)
         self.collection = self.db[self.collection_name]
         # self.collection.create_index([('userid', pymongo.ASCENDING)], unique=True)
 
