@@ -3,6 +3,7 @@ from bs4 import NavigableString
 import requests
 import re
 import datetime
+from mongo import UserModel
 
 def get_soup_by_url(url):
     html = requests.get(url)
@@ -118,6 +119,7 @@ def get_all_anchor_data():
     print('花椒主播分类: ', categories)
     for category in categories.keys():
         data = get_category_list(category)
+        UserModel().bulk_insterts(data)
         print('category ' + str(category)+' anchor-number: ', len(data))
 
 
@@ -159,4 +161,5 @@ def get_mingxingricheng_data():
             return data
 
 # get_mingxingricheng_data()
+get_all_anchor_data()
 
