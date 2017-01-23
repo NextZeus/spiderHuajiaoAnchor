@@ -25,7 +25,7 @@ class Model():
     def find_by_id(self, _id):
         return self.collection.find_one({"_id": ObjectId(_id)})
 
-    def bulk_insterts(self, inserts):
+    def bulk_inserts(self, inserts):
         self.collection.insert_many(inserts)
 
 
