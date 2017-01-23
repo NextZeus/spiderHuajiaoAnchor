@@ -1,20 +1,39 @@
 import datetime
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 
-client = MongoClient("mongodb://localhost:27017/")
+class Mongo():
+    def __new__(cls, *args, **kwargs):
+        client = MongoClient(str(*args))
+        db = client['huajiao']
+        return db
+    def __del__(self):
+        self.client.close()
 
-db = client['huajiao']
+class Model():
+    def __init__(self):
+        print('collection_name: ', self.collection_name)
+        self.collection = self.db[self.collection_name]
+    def find(self, option={}, select={}):
+        print('option: ', option)
+        print('select: ', select)
+        return self.collection.find(option, select)
 
-collection = db['anchor']
+    def find_one(self, option={}, select={}):
+        self.collection.find_one(option, select)
 
-info = {
-    "username": "Mike",
-    "text": "My First Blog",
-    "tags": ["mongodb", "python", "pymongo"],
-    "date": datetime.datetime.utcnow()
-}
+    def find_by_id(self, _id):
+        self.collection.find_one({"_id": ObjectId(_id)})
+
+    def bulk_insterts(self, inserts):
+        self.collection.insert_many(inserts)
 
 
-info_id = collection.insert_one(info).inserted_id
+class BaseModel(Model):
+    db = Mongo("mongodb://localhost:27017/")
+    print('db: ', db)
 
-print('info_id: ', info_id)
+class UserModel(BaseModel):
+    collection_name = 'anchor'
+
+print(UserModel().find({'name': '晓东'}, {'name': 1}))
