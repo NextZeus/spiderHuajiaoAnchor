@@ -134,6 +134,7 @@ def get_category_list(catgory_id):
             liveId = link.get('href')[3:]
             userid = get_anchorid_by_liveid(liveId)
             person = get_anchor_info_by_userid(userid)
+            UserModel().repalce_one({'userid': userid, person})
             data.append(person)
 
     return data
@@ -144,6 +145,8 @@ def get_category_list(catgory_id):
 * 本来想着用pymysql呢， 本地的mysql老是有问题，就选择了pymongo
 * 仿照之前看的花椒直播爬虫博客， 自己写了一个mongo model 详情见mongo.py
 * 安装: pip3 install pymongo
+* 引用自定义模块：from mongo import UserModel
+* 添加数据： UserModel().repalce_one({'userid': userid, person})
 
 
 
