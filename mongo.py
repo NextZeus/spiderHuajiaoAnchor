@@ -28,13 +28,13 @@ class Model():
     def bulk_inserts(self, inserts):
         self.collection.insert_many(inserts)
 
-    def update_one(self, filter, update, upsert=False):
+    def update_one(self, filter, update, upsert=True):
         return self.collection.update_one(filter, {'$set': update}, upsert).matched_count
 
-    def replace_one(self, filter, replace, upsert=False):
+    def replace_one(self, filter, replace, upsert=True):
         return self.collection.replace_one(filter, replace, upsert).modified_count
 
-    def update_many(self, filter, update, upsert=False):
+    def update_many(self, filter, update, upsert=True):
         return self.collection.update_many(filter, {'$set': update}, upsert).modified_count
 
     def delete_one(self, filter):

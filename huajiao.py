@@ -112,7 +112,7 @@ def get_category_list(catgory_id):
             userid = get_anchorid_by_liveid(liveId)
             if userid != 'uid':
                 person = get_anchor_info_by_userid(userid)
-                userModel.update_one({'userid': userid}, person)
+                userModel.replace_one({'userid': userid}, person)
                 data.append(person)
 
     return data
@@ -164,6 +164,5 @@ def get_mingxingricheng_data():
             print('行程: ', xingcheng)
             return data
 
-# get_mingxingricheng_data()
 get_all_anchor_data()
 
