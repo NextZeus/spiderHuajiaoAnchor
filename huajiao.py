@@ -119,9 +119,11 @@ def get_all_anchor_data():
     print('花椒主播分类: ', categories)
     for category in categories.keys():
         data = get_category_list(category)
-        UserModel().bulk_inserts(data)
-        print('category ' + str(category)+' anchor-number: ', len(data))
+        print('category ' + str(category) + ' anchor-number: ', len(data))
+        if len(data) > 0:
+            UserModel().bulk_inserts(data)
 
+    return
 
 def get_mingxingricheng_data():
     url = "http://www.huajiao.com/recommend/mingxingricheng"
