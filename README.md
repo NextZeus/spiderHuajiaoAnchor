@@ -159,6 +159,3 @@ def get_category_list(catgory_id):
 > 具体的最底层的tag的时候， tag.get_text() tag.get('href'), tag.get('xxx') 可以获取到某个tag的属性值
 >
 > re 正则匹配 href=re.compile('user') href中包含user字符串的超链接
-
-
-### 年后回来继续
