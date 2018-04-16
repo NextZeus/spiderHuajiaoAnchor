@@ -1,5 +1,7 @@
 # 一步一步爬取花椒直播主播数据
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/NextZeus/spiderHuajiaoAnchor.svg)](https://greenkeeper.io/)
+
 ## 第一步 安装所需库
 * pip3 install bs4
 * pip3 install requests
